@@ -51,6 +51,9 @@ module EventuallyTracker
             controller_name = params[:controller]
             action_name     = params[:action]
             data            = params.except :controller, :action
+            data            = data.reject do | key, value |
+              value.instance_of? ActionDispatch::Http::UploadedFile
+            end
             eventually_tracker.track_action controller_name, action_name, @eventually_action_uid, data, session_data
           end
         end
